@@ -1,0 +1,434 @@
+{
+	"info": {
+		"_postman_id": "0310e215-a6c0-4264-97a5-af0ed03f54fa",
+		"name": "SignIn",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "23448352",
+		"_collection_link": "https://warped-station-774911.postman.co/workspace/Team-Workspace~33ad36c2-bfbd-43bd-8b54-26ef134cc999/collection/23448352-0310e215-a6c0-4264-97a5-af0ed03f54fa?action=share&source=collection_link&creator=23448352"
+	},
+	"item": [
+		{
+			"name": "Client-Handshake",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200)\r",
+							"});\r",
+							"\r",
+							"if (pm.response.to.have.status(200)) {\r",
+							"    const responseData = pm.response.json()\r",
+							"    pm.environment.set(\"clientHandshakeToken\", responseData.token);\r",
+							"}\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"payload\": \"{\\r\\n        \\\"agent_iam\\\": \\\"{{agent_iam}}\\\"\\r\\n    }\"\r\n}\r\n\r\n\r\n\r\n\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url_identity_management}}/client-handshake",
+					"host": [
+						"{{base_url_identity_management}}"
+					],
+					"path": [
+						"client-handshake"
+					]
+				},
+				"description": "## Details:\n\n1. Handshake must be called before sign-in and sign-up (Mobile/web App) APIs\n2. Handshake has expiry of 5 minutes i.e. if user does not sign-up/sign-up in 5 min, it will expire and sign-up/in will fail. Front-end shall call handshake again to sign-up/in.\n3. Upon handshake expiry, an http status code 503 is received. In such case, call client-handshake API.\n    \n\n| **Parameters** | **Notes** |\n| --- | --- |\n| `agent_iam (string) (mandatory)` | Enum:  <br>\\- if user is logging in from mobile app then  <br>`agent_iam = \"mobile-app\"`  <br>\\- if user is logging in from web then:  <br>`agent_iam = \"web-app\"` |"
+			},
+			"response": [
+				{
+					"name": "Success (200)",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"payload\": \"{\\r\\n        \\\"agent_iam\\\": \\\"mobile-app\\\"\\r\\n    }\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://identity-mgt.transroadservices.com/api/v1/client-handshake",
+							"protocol": "http",
+							"host": [
+								"identity-mgt",
+								"transroadservices",
+								"com"
+							],
+							"path": [
+								"api",
+								"v1",
+								"client-handshake"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Server",
+							"value": "nginx/1.14.0 (Ubuntu)"
+						},
+						{
+							"key": "Date",
+							"value": "Sun, 20 Nov 2022 18:33:06 GMT"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "203"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"cb-ixig9p2je2903Q6leG81gc9jzlw\""
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"token\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzZXNzaW9uSWQiOiJhQmRqV3RpaktUU2NNblNBY1J0c3pabVVQdHZ2N2JjVCIsImlhdCI6MTY2ODk2OTE4NiwiZXhwIjoxNjcxNTYxMTg2fQ.b9tzeee7X-Nai39WJ5KqUBGyQGU5HsS2rcSDdUwkFDA\"\n}"
+				}
+			]
+		},
+		{
+			"name": "Sign-in",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"console.log(\"Handshake variable:  \", pm.collectionVariables.get(\"clientHandshakeToken\"));\r",
+							"if( pm.collectionVariables.get(\"clientHandshakeToken\") == null || \r",
+							"    pm.collectionVariables.get(\"clientHandshakeToken\") == undefined || \r",
+							"    pm.collectionVariables.get(\"clientHandshakeToken\") == \"\") {\r",
+							"        const agent_iam = pm.collectionVariables.get(\"agent_iam\");\r",
+							"    const req_options = {\r",
+							"    url: \"http://identity-mgt.transroadservices.com/api/v1/client-handshake\",\r",
+							"    method: 'POST',\r",
+							"    header: { 'content-type': 'application/json' },\r",
+							"    body: {      \r",
+							"        mode: 'raw',\r",
+							"        raw: JSON.stringify({\"payload\": `{\\r\\n        \\\"agent_iam\\\": \\\"${agent_iam}\\\"\\r\\n    }`})\r",
+							"        }\r",
+							"    };\r",
+							"\r",
+							"    pm.sendRequest(req_options, function (err, response) {\r",
+							"    var jsonData = response.json();\r",
+							"    console.log(\"jsonData: \", jsonData);\r",
+							"    console.log(\"token: \"+ jsonData.token );\r",
+							"    pm.collectionVariables.set(\"clientHandshakeToken\", jsonData.token);\r",
+							"});\r",
+							"}\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// passportToken\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"if (pm.response.to.have.status(200)) {\r",
+							"    const responseData = pm.response.json();\r",
+							"    console.log(\"Response Body: \", responseData);   \r",
+							"        console.log(\"Passport Token: \", responseData.passportToken);\r",
+							"        pm.environment.set(\"passportToken\", responseData.passportToken);\r",
+							"    }\r",
+							"\r",
+							" "
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "{{clientHandshakeToken}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "\r\n{\r\n    \"payload\": \"{\\r\\n        \\\"email\\\": \\\"{{email}}\\\",\\r\\n        \\\"password\\\": \\\"{{password}}\\\"\\r\\n    }\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url_identity_management}}/sign-in",
+					"host": [
+						"{{base_url_identity_management}}"
+					],
+					"path": [
+						"sign-in"
+					]
+				},
+				"description": "## Details:\n\n- Upon successful sign in, a **1 day session** is maintained for the user.\n- After 24 hours, session will get expired and a response with http status code 503 will be received on the APIs that are called after sign-in.\n- Upon http status code 503, call client-handshake API again, then sign-in API for a new user session.\n    \n\n| **Paramters** | **Notes** |\n| --- | --- |\n| `email (string) (mandatory)` | `valid email of the user` |\n| `password (string) (mandatory)` | `password for user account` |\n\n> IMPORTANT: This API requires token (in Authorization header) that is received in client-handshake API"
+			},
+			"response": [
+				{
+					"name": "Success (200)",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzZXNzaW9uSWQiOiJ1bEdlZkVxU2lOSlVEeHRabTVnYW9VNUdza0RTZnFTeiIsImlhdCI6MTY2ODk3NDMyOCwiZXhwIjoxNjcxNTY2MzI4fQ.v5DnBEkBiYM24qOzmM_A2KzHqqdXJSyXEnJyhjnsbg0",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"payload\": \"{\\r\\n        \\\"email\\\": \\\"bradatservice@gmail.com\\\",\\r\\n        \\\"password\\\": \\\"123456789\\\"\\r\\n    }\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://identity-mgt.transroadservices.com/api/v1/sign-in",
+							"protocol": "http",
+							"host": [
+								"identity-mgt",
+								"transroadservices",
+								"com"
+							],
+							"path": [
+								"api",
+								"v1",
+								"sign-in"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Server",
+							"value": "nginx/1.14.0 (Ubuntu)"
+						},
+						{
+							"key": "Date",
+							"value": "Sun, 20 Nov 2022 19:59:04 GMT"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "336"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"150-//kexW/0VPeRnicC4jVN0WgG0Ss\""
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"status\": \"success\",\n    \"token\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzZXNzaW9uSWQiOiJ1bEdlZkVxU2lOSlVEeHRabTVnYW9VNUdza0RTZnFTeiIsImlhdCI6MTY2ODk3NDMyOCwiZXhwIjoxNjcxNTY2MzI4fQ.v5DnBEkBiYM24qOzmM_A2KzHqqdXJSyXEnJyhjnsbg0\",\n    \"user\": {\n        \"fullName\": \"Sheheryar Afzal\",\n        \"email\": \"bradatservice@gmail.com\",\n        \"kuid\": \"0311fc91c8774a21a5cf52c4dbd057ee\"\n    }\n}"
+				},
+				{
+					"name": "Handshake expired (503)",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzZXNzaW9uSWQiOiJ4TXQyNWpKaXhkMnhqSURXMjNkSVhSb202aVRFcmducSIsImlhdCI6MTY2ODg3OTA1OSwiZXhwIjoxNjcxNDcxMDU5fQ.V2PPkItrU27r5Y-7olSHWzMrNf34-LbktpH_SVLw64s",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"payload\": \"{\\r\\n        \\\"email\\\": \\\"bradatservice@gmail.com\\\",\\r\\n        \\\"password\\\": \\\"123456789\\\"\\r\\n    }\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://identity-mgt.transroadservices.com/api/v1/sign-in",
+							"protocol": "http",
+							"host": [
+								"identity-mgt",
+								"transroadservices",
+								"com"
+							],
+							"path": [
+								"api",
+								"v1",
+								"sign-in"
+							]
+						}
+					},
+					"status": "Service Unavailable",
+					"code": 503,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Server",
+							"value": "nginx/1.14.0 (Ubuntu)"
+						},
+						{
+							"key": "Date",
+							"value": "Sun, 20 Nov 2022 19:58:05 GMT"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "103"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"67-OF/CbM+NPR3iGJUXApuGpGiM2vQ\""
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"status\": \"failed\",\n    \"message\": {\n        \"code\": \"\",\n        \"title\": \"Invalid request\",\n        \"description\": \"try handshake again\"\n    }\n}"
+				},
+				{
+					"name": "Sign-in",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{clientHandshakeToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"payload\": \"{\\r\\n        \\\"email\\\": \\\"demo.user@o3interfaces.com\\\",\\r\\n        \\\"password\\\": \\\"{{password}}\\\"\\r\\n    }\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url_identity_management}}/sign-in",
+							"host": [
+								"{{base_url_identity_management}}"
+							],
+							"path": [
+								"sign-in"
+							]
+						}
+					},
+					"status": "Bad Request",
+					"code": 400,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Server",
+							"value": "nginx/1.18.0 (Ubuntu)"
+						},
+						{
+							"key": "Date",
+							"value": "Tue, 10 Oct 2023 12:50:16 GMT"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "152"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"98-9rtX/81xVrMNcNKjwHltanG0v1c\""
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"status\": false,\n    \"message\": {\n        \"code\": \"missing_request_aurgument\",\n        \"title\": \"An Invalid Request!\",\n        \"description\": \"Required parameter(s) information missing.\"\n    }\n}"
+				}
+			]
+		}
+	],
+	"variable": [
+		{
+			"key": "clientHandshakeToken",
+			"value": ""
+		},
+		{
+			"key": "passportToken",
+			"value": ""
+		}
+	]
+}
