@@ -1,0 +1,314 @@
+{
+  "_": {
+    "postman_variable_scope": "environment",
+    "postman_exported_at": "2023-10-16T12:10:53.367Z",
+    "postman_exported_using": "Postman/10.17.2"
+  },
+  "id": "f44be9d7-e821-4a79-bfc9-866de8ec5be1",
+  "name": "FeatureTesting Variables",
+  "values": [
+    {
+      "type": "any",
+      "value": "http://identity-mgt.transroadservices.com/api/v1",
+      "key": "identityManagementUrl"
+    },
+    {
+      "type": "any",
+      "value": "sshahroz.ahmadd@gmail.com",
+      "key": "invitedEmail"
+    },
+    {
+      "type": "any",
+      "value": "http://application-webservices.transroadservices.com/api/v1",
+      "key": "app_web_services_endpoint"
+    },
+    {
+      "type": "any",
+      "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzZXNzaW9uSWQiOiJGOUE0MzVBMEFFM0Q0QzY1OTc5MUZDQ0NEOENCMTg2NyIsImlhdCI6MTY4NjcyMTc0NiwiZXhwIjoxNjg5MzEzNzQ2fQ.eHjxFaO2RWaaJuSeQ58UXM6ow6_QqOUgwMBAhyTi5As",
+      "key": "clientHandshakeToken"
+    },
+    {
+      "type": "any",
+      "value": "mobile-app",
+      "key": "agent_iam"
+    },
+    {
+      "type": "any",
+      "value": "demo.user@o3interfaces.com",
+      "key": "email"
+    },
+    {
+      "type": "any",
+      "value": "azhar@gmail.com",
+      "key": "user1_email"
+    },
+    {
+      "type": "any",
+      "value": "123456789",
+      "key": "password"
+    },
+    {
+      "type": "any",
+      "value": "",
+      "key": "passportToken"
+    },
+    {
+      "type": "any",
+      "value": "43448dd105214b48976fc1233cce0d4e",
+      "key": "workspace_kuid"
+    },
+    {
+      "type": "any",
+      "value": "9PoCm3bX8zuImAZ4Kwx55PXBzW7eDzz7",
+      "key": "project_kuid"
+    },
+    {
+      "type": "any",
+      "value": "0",
+      "key": "is_listWorkspaces_called"
+    },
+    {
+      "type": "any",
+      "value": "0",
+      "key": "is_ownedProjectListing_called"
+    },
+    {
+      "type": "any",
+      "value": "0",
+      "key": "is_sharedProjectListing_called"
+    },
+    {
+      "type": "any",
+      "value": "5qBAkKeuBNEQvRjVA7dMfGGcvoSAP5wsXW",
+      "key": "request_kuid"
+    },
+    {
+      "type": "any",
+      "value": "a3423182e793e47769c97c",
+      "key": "ws_role_kuid"
+    },
+    {
+      "type": "any",
+      "value": "a79a42037578bb3a",
+      "key": "pr_role_kuid"
+    },
+    {
+      "type": "any",
+      "value": "example@gamil.com",
+      "key": "invitee"
+    },
+    {
+      "type": "any",
+      "value": "",
+      "key": "memberKuid"
+    },
+    {
+      "type": "any",
+      "value": "xyz1",
+      "key": "status"
+    },
+    {
+      "type": "any",
+      "value": "sayeh61859@asoflex.com",
+      "key": "user2_email"
+    },
+    {
+      "type": "any",
+      "value": "123456789",
+      "key": "user1_password"
+    },
+    {
+      "type": "any",
+      "value": "xipixew453@etondy.com",
+      "key": "user3_email"
+    },
+    {
+      "type": "any",
+      "value": "123456789",
+      "key": "user2_password"
+    },
+    {
+      "type": "any",
+      "value": "",
+      "key": "message_kuid"
+    },
+    {
+      "type": "any",
+      "value": "dsMD3zCoP5M5baD0daFzPLYOTGjFymjQ",
+      "key": "assignee_kuid"
+    },
+    {
+      "type": "any",
+      "value": "sNFJolRwNsrqmiJ4rdALYxePd5r3NOns",
+      "key": "bug_kuid"
+    },
+    {
+      "type": "any",
+      "value": "xyz1",
+      "key": "todo"
+    },
+    {
+      "type": "any",
+      "value": "xyz2",
+      "key": "inprogress"
+    },
+    {
+      "type": "any",
+      "value": "xyz3",
+      "key": "resolved"
+    },
+    {
+      "type": "any",
+      "value": "0de3b35fdb3625bb8b2328c3651b465e",
+      "key": "crash_kuid"
+    },
+    {
+      "type": "any",
+      "value": "gawamik825@jthoven.com",
+      "key": "automation"
+    },
+    {
+      "type": "any",
+      "value": "https://fu8e.space/local-gateway/app-services/api/v1",
+      "key": "base_url_appli_web"
+    },
+    {
+      "type": "any",
+      "value": "https://fu8e.space/local-gateway/app-identity/api/v1",
+      "key": "base_url_identity_management"
+    },
+    {
+      "type": "any",
+      "value": "",
+      "key": "ownworkspace_kuid"
+    },
+    {
+      "type": "any",
+      "value": "",
+      "key": "sharedworkspace_kuid"
+    },
+    {
+      "type": "any",
+      "value": "",
+      "key": "comment_kuid"
+    },
+    {
+      "type": "any",
+      "value": "",
+      "key": "previliged_kuid"
+    },
+    {
+      "type": "any",
+      "value": "",
+      "key": "release_kuid"
+    },
+    {
+      "type": "any",
+      "value": "",
+      "key": "suiteKuid"
+    },
+    {
+      "type": "any",
+      "value": "",
+      "key": "runnable_Kuid"
+    },
+    {
+      "type": "any",
+      "value": "",
+      "key": "testerKuid"
+    },
+    {
+      "type": "any",
+      "value": "",
+      "key": "sdk_KUID"
+    },
+    {
+      "type": "any",
+      "value": "",
+      "key": "groupKuid"
+    },
+    {
+      "type": "any",
+      "value": "",
+      "key": "project_Name"
+    },
+    {
+      "type": "any",
+      "value": "",
+      "key": "issue_Type"
+    },
+    {
+      "type": "any",
+      "value": "",
+      "key": "deviceId"
+    },
+    {
+      "type": "any",
+      "value": "",
+      "key": "Project_Name"
+    },
+    {
+      "type": "any",
+      "value": "",
+      "key": "project_key"
+    },
+    {
+      "type": "any",
+      "value": "",
+      "key": "integrationKuid"
+    },
+    {
+      "type": "any",
+      "value": "",
+      "key": "testCaseId"
+    },
+    {
+      "type": "any",
+      "value": "",
+      "key": "runable_Kuid"
+    },
+    {
+      "type": "any",
+      "value": "",
+      "key": "releaseKuid"
+    },
+    {
+      "type": "any",
+      "value": "",
+      "key": "status_kuid"
+    },
+    {
+      "type": "any",
+      "value": "https://fu8e.space/local-gateway/sdk-bugs/api/v1",
+      "key": "sdk_bug_service_url"
+    },
+    {
+      "type": "any",
+      "value": "https://fu8e.space/local-gateway/sdk-handshake/api/v1",
+      "key": "sdk_handshake_url"
+    },
+    {
+      "type": "any",
+      "value": "https://fu8e.space/local-gateway/sdk-crashes/api/v1",
+      "key": "sdk__submit_crash"
+    },
+    {
+      "type": "any",
+      "value": "https://fu8e.space/local-gateway/app-identity/api/v1",
+      "key": "identityManagementUrl"
+    },
+    {
+      "type": "any",
+      "value": "https://fu8e.space/local-gateway/app-services/api/v1",
+      "key": "appl_web_service_url"
+    },
+    {
+      "type": "any",
+      "value": "https://fu8e.space/local-gateway/browser-plugin-services/api/v1/sdk/",
+      "key": "browser_plugin"
+    }
+  ],
+  "_postman_variable_scope": "environment",
+  "_postman_exported_at": "2023-10-23T13:00:02.065Z",
+  "_postman_exported_using": "Newman/6.0.0"
+}

@@ -1,36 +1,139 @@
 const newman = require('newman');
+const fs = require('fs');
 
 const collections = [
     './IndividualCollection/SignIn.postman_collection.json',
-    './IndividualCollection/WorkSpace.postman_collection.json',
-
+     './IndividualCollection/WorkSpace.postman_collection.json',
+    //  './IndividualCollection/Project.postman_collection.json',
+    //  './IndividualCollection/Bug.postman_collection.json'
 ];
-const environmentFile = './FeatureTesting_Variables.postman_environment.json'
+let environmentFile = './FeatureTesting_Variables.postman_environment.json'
 
-let environmentVariables = [];
-environmentVariables.push(
-  {
-    enabled: true,
-    key: "foo",
-    value: "bar",
-    type: 'any'
-  }
-);
 
-collections.forEach((collections) => {
+collections.forEach((collection) => {
+  
+  let environmentFile = './data.json'
+  // if (!environmentFile){
+  //   console.log("mew");
+  //   environmentFile='./FeatureTesting_Variables.postman_environment.json'
+  // }
 
     newman.run( {
-      collection: collections,
+      
+      collection: collection,
       environment: environmentFile,
-      envVar: environmentVariables,
+
 
       reporters: ['cli', 'htmlextra', 'json'],
       reporter: {
-  
+
       }, 
       color: 'auto', // For colored output
-    })    
+    },
+    (err, summary) => {
+      if (err) {
+          console.error(`Error running collection: ${err}`);
+          return;
+      }
+
+      const environmentData = JSON.parse(fs.readFileSync(environmentFile, 'utf8'));
+
+      const collectionEnvironment = summary.environment.values;
+      environmentData.values = collectionEnvironment.map(variable => ({
+          key: variable.key,
+          value: variable.value,
+          enabled: true
+      }));
+
+      // Update the environment file with the variables from each collection run
+      fs.writeFileSync('./data.json', JSON.stringify(environmentData, null, 2));
+      console.log('Environment variables updated in file:', environmentFile);
+    }); 
 })
+
+
+// async function runCollections() {
+//   let environmentData = JSON.parse(fs.readFileSync(environmentFile, 'utf8'));
+
+//   for (const collection of collections) {
+//       const summary = await newman.run({
+//           collection: collection,
+//           environment: environmentFile,
+//           reporters: ['cli', 'htmlextra', 'json'],
+//           color: 'auto',
+//       });
+
+//       if (summary.error) {
+//           console.error(`Error running collection: ${summary.error.message}`);
+//           return;
+//       }
+
+//       if (!environmentData.values) {
+//           environmentData.values = [];
+//       }
+
+//       if (summary.environment && summary.environment.values) {
+//         // Merge environment variables from the current collection into the environmentData
+//         for (const variable of summary.environment.values) {
+//             // Check if the variable key already exists, and update its value
+//             const existingVariableIndex = environmentData.values.findIndex(
+//                 (envVar) => envVar.key === variable.key
+//             );
+//             if (existingVariableIndex !== -1) {
+//                 environmentData.values[existingVariableIndex].value = variable.value;
+//             } else {
+//                 // If the variable doesn't exist, add it to the environmentData
+//                 environmentData.values.push(variable);
+//             }
+//         }
+//     }
+// }
+
+
+//   updateEnvironmentFile(environmentData);
+// }
+
+// runCollections();
+// collections.forEach((collections,index) => {
+
+//     const environmentData = JSON.parse(fs.readFileSync(environmentFile, 'utf8'));
+//     newman.run( {
+//       collection: collections,
+//       environment: environmentFile,
+
+//       reporters: ['cli', 'htmlextra', 'json'],
+//       reporter: {
+  
+//       }, 
+//       color: 'auto', // For colored output
+//     },
+//     (err, summary) => {
+//       if (err) {
+//           console.error(`Error running collection: ${err}`);
+//           return;
+//       }
+
+
+//       if (index === 0) {
+//           // If it's the first collection, update the environment variables with the values from the first collection run
+//           const firstCollectionEnvironment = summary.environment.values;
+//                   // Update the environment file with the variables from the first collection
+//             environmentData.values = firstCollectionEnvironment.map(variable => ({
+//               key: variable.key,
+//               value: variable.value,
+//               enabled: true
+//           }));
+
+//           // console.log(environmentData.values);
+//           // Update the environment file with the variables from the first collection
+//           updateEnvironmentFile(environmentData);
+//       }
+//       }); 
+
+// })
+
+
+
 
   // });
     // (err, summary) => {
